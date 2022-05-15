@@ -4,28 +4,47 @@
 // This software can be used and/or modified for academich use as long as 
 // this commented part is listed
 //
-// Last modified by: Zein Salah, on 24.04.2018
+// Last modified by: Zein Salah, on 26.02.2022
 //
+
 
 #pragma once
 
-#include <QWidget>
+#include <QOpenGLWidget>
 
-class RenderWidget : public QWidget
+class RenderWidget : public QOpenGLWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    RenderWidget(QWidget* parent = 0);
+#define M_PI   3.14159265358979323846
 
-    QSize minimumSizeHint() const override;
-    QSize sizeHint() const override;
 
-    void myDrawLine(float x1, float y1, float x2, float y2);
-    void myDrawARC(float xc, float yc, float t1, float t2, float r);
-    void myDrawCircle(float xc, float yc, float r);
+	RenderWidget(QWidget *parent = 0);
+	~RenderWidget();
+
+	QSize minimumSizeHint() const override;
+	QSize sizeHint() const override;
+
+protected slots:
+  void zoomIn();
+  void zoomOut();
+  void rotateAboutY();
+  void rotateAboutx();
 
 protected:
-    void paintEvent(QPaintEvent* event) override;
+  void initializeGL() override;
+  void resizeGL(int w, int h) override;
+  void paintGL() override;
+
+  void drawCube(void);
+
+  typedef struct
+  {
+    double x, y, z;
+  } Point3D;
+
+  Point3D m_ViewPoint;
 
 };
+
